@@ -3,7 +3,7 @@ from api.serializers import TodoSerializer
 from todo.models import Todo
 
 
-class TodoList(generics.ListAPIView):
+class TodoListView(generics.ListAPIView):
 
     serializer_class = TodoSerializer
 

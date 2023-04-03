@@ -3,5 +3,5 @@ from api import views
 
 
 urlpatterns = [
-    path('todos/', views.TodoList.as_view()),
+    path('todos/', views.TodoListView.as_view()),
 ]
