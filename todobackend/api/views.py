@@ -1,5 +1,6 @@
 from django.db import IntegrityError
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -68,3 +69,31 @@ def signup(request):
         
         except IntegrityError:
             return JsonResponse({'error': 'Username taken. Choose another username.'}, 400)
+
+
+@csrf_exempt
+def login(request):
+
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        username = data['username']
+        password = data['password']
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if not user:
+            return JsonResponse(
+                {'error': 'unable to login. check username and password'},
+                status=400
+            )
+        
+        else:
+            try:
+                token = Token.objects.get(user=user)
+            except:
+                token = Token.objects.create(user=user)
+            
+            return JsonResponse({'token': str(token)}, status=201)
