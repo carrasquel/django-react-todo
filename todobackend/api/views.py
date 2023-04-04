@@ -129,8 +129,11 @@ class LogoutView:
     def logout(cls, request):
 
         if request.method == "POST":
-            key = request.headers.get('Authorization').replace("Token ", "")
-            token = Token.objects.get(key=key)
-            token.delete()
+            try:
+                key = request.headers.get('Authorization').replace("Token ", "")
+                token = Token.objects.get(key=key)
+                token.delete()
 
-            return JsonResponse({'response': 'user logout'}, status=201)
+                return JsonResponse({'response': 'user logout'}, status=201)
+            except:
+                return JsonResponse({'error': 'something went wrong'}, status=400)
