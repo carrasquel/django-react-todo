@@ -113,3 +113,24 @@ class LoginView:
                     token = Token.objects.create(user=user)
                 
                 return JsonResponse({'token': str(token)}, status=201)
+            
+
+class LogoutView:
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    @classmethod
+    def as_view(cls):
+
+        return LogoutView.logout
+    
+    @classmethod
+    @csrf_exempt
+    def logout(cls, request):
+
+        if request.method == "POST":
+            key = request.headers.get('Authorization').replace("Token ", "")
+            token = Token.objects.get(key=key)
+            token.delete()
+
+            return JsonResponse({'response': 'user logout'}, status=201)
