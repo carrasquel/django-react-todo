@@ -49,51 +49,67 @@ class TodoToggleCompleteView(generics.UpdateAPIView):
         serializer.save()
 
 
-@csrf_exempt
-def signup(request):
+class SignUpView:
+    
+    @classmethod
+    def as_view(cls):
 
-    if request.method == "POST":
-        try:
+        return SignUpView.signup
+    
+    @classmethod
+    @csrf_exempt
+    def signup(cls, request):
+
+        if request.method == "POST":
+            try:
+                data = JSONParser().parse(request)
+                username = data['username']
+                password = data['password']
+                user = User.objects.create_user(
+                    username=username,
+                    password=password
+                )
+                user.save()
+
+                token = Token.objects.create(user=user)
+
+                return JsonResponse({'token': str(token)}, status=201)
+            
+            except IntegrityError:
+                return JsonResponse({'error': 'Username taken. Choose another username.'}, 400)
+
+
+class LoginView:
+    
+    @classmethod
+    def as_view(cls):
+
+        return LoginView.login
+
+    @classmethod
+    @csrf_exempt
+    def login(cls, request):
+
+        if request.method == "POST":
             data = JSONParser().parse(request)
             username = data['username']
             password = data['password']
-            user = User.objects.create_user(
+            user = authenticate(
+                request,
                 username=username,
                 password=password
             )
-            user.save()
 
-            token = Token.objects.create(user=user)
-
-            return JsonResponse({'token': str(token)}, status=201)
-        
-        except IntegrityError:
-            return JsonResponse({'error': 'Username taken. Choose another username.'}, 400)
-
-
-@csrf_exempt
-def login(request):
-
-    if request.method == "POST":
-        data = JSONParser().parse(request)
-        username = data['username']
-        password = data['password']
-        user = authenticate(
-            request,
-            username=username,
-            password=password
-        )
-
-        if not user:
-            return JsonResponse(
-                {'error': 'unable to login. check username and password'},
-                status=400
-            )
-        
-        else:
-            try:
-                token = Token.objects.get(user=user)
-            except:
-                token = Token.objects.create(user=user)
+            if not user:
+                return JsonResponse(
+                    {'error': 'unable to login. check username and password'},
+                    status=400
+                )
             
-            return JsonResponse({'token': str(token)}, status=201)
+            else:
+                try:
+                    token = Token.objects.get(user=user)
+                except:
+                    token = Token.objects.create(user=user)
+                
+                return JsonResponse({'token': str(token)}, status=201)
