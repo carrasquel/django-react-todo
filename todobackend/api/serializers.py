@@ -3,7 +3,6 @@ from todo.models import Todo
 
 
 class TodoSerializer(serializers.ModelSerializer):
-
     created = serializers.ReadOnlyField()
     completed = serializers.ReadOnlyField()
 
@@ -13,7 +12,6 @@ class TodoSerializer(serializers.ModelSerializer):
 
 
 class TodoToggleCompleteSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Todo
         fields = ["id"]

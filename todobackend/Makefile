@@ -20,11 +20,11 @@ serve:
 	python manage.py migrate && python manage.py runserver
 
 lint:
-	flake8 palyanytsya
-	mypy palyanytsya
+	flake8 .
+	mypy .
 
 black:
-	python -m black palyanytsya
+	python -m black .
 
 clean:
 	rm -rf __pycache__
