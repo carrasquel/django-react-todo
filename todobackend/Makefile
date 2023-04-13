@@ -2,13 +2,14 @@ VENV = venv
 PYTHON = $(VENV)/bin/python
 PIP = $(VENV)/bin/pip
 
-install-dev:
+upgrade-pip:
 	pip install --upgrade pip pip-tools
-	pip-sync requirements.txt requirements-dev.txt
+
+install-dev:
+	pip install requirements.txt requirements-dev.txt
   
 install:
-	pip install --upgrade pip pip-tools
-	pip-sync requirements.txt
+	pip install -r requirements.txt
 
 env:
 	python -m venv venv
@@ -40,4 +41,4 @@ checkmigrations:
 	python manage.py makemigrations --check --no-input --dry-run
 
 test:
-	pytest -n 4 -x
+	pytest
