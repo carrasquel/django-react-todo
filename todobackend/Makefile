@@ -32,7 +32,7 @@ clean:
 
 clean-imports:
 	isort .
-	autoflake -r -i --remove-all-unused-imports --ignore-init-module-imports project_name
+	autoflake -r -i --remove-all-unused-imports --ignore-init-module-imports .
 
 clean-lint: cleanimports black lint
 
