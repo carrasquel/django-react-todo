@@ -1,3 +1,7 @@
+VENV = venv
+PYTHON = $(VENV)/bin/python
+PIP = $(VENV)/bin/pip
+
 install-dev:
 	pip install --upgrade pip pip-tools
 	pip-sync requirements.txt requirements-dev.txt
@@ -5,12 +9,12 @@ install-dev:
 install:
 	pip install --upgrade pip pip-tools
 	pip-sync requirements.txt
-  
-update:
-	pip install --upgrade pip pip-tools
-	pip-compile requirements.in
-	pip-compile requirements-dev.in
-	pip-sync requirements.txt requirements-dev.txt
+
+env:
+	python -m venv venv
+
+activate:
+	$(VENV)/bin/activate
 
 serve:
 	python manage.py migrate && python manage.py runserver
@@ -21,6 +25,10 @@ lint:
 
 black:
 	python -m black palyanytsya
+
+clean:
+	rm -rf __pycache__
+	rm -rf venv
 
 clean-imports:
 	isort .
