@@ -12,11 +12,10 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 RUN mkdir -p /opt/app
 RUN mkdir -p /opt/app/pip_cache
 RUN mkdir -p /opt/app/todo
-COPY requirements.txt start-server.sh /opt/app/
-COPY .pip_cache /opt/app/pip_cache/
+COPY requirements.txt start-server.sh /opt/app/todo/
 COPY . /opt/app/
 WORKDIR /opt/app/todo
-RUN pip install -r requirements.txt --cache-dir /opt/app/pip_cache
+RUN pip install -r requirements.txt
 RUN chown -R www-data:www-data /opt/app
 
 # start server
