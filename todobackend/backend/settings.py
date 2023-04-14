@@ -53,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -136,3 +137,7 @@ REST_FRAMEWORK = {
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# CSRF
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8020']
