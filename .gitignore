@@ -137,3 +137,6 @@ logs
 
 node_modules
 bower_components
+
+# static files
+/todobackend/static/

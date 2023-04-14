@@ -42,3 +42,6 @@ checkmigrations:
 
 test:
 	pytest
+
+collect:
+	python manage.py collectstatic
