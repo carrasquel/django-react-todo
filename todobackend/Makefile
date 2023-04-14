@@ -45,3 +45,20 @@ test:
 
 collect:
 	python manage.py collectstatic
+
+build-dev:
+	docker build -t todoapp .
+
+run-dev:
+	docker run --name todoapp \
+	-p 8020:8020 \
+	-e DJANGO_SUPERUSER_USERNAME=admin \
+	-e DJANGO_SUPERUSER_PASSWORD=hello1 \
+	-e DJANGO_SUPERUSER_EMAIL=admin@example.com \
+	todoapp
+
+restart-dev:
+	docker stop todoapp && docker start todoapp
+
+bash-dev:
+	docker exec -it todoapp /bin/bash
