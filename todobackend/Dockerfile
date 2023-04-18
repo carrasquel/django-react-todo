@@ -8,6 +8,10 @@ COPY nginx.default /etc/nginx/sites-available/default
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
+# install netcat
+
+RUN apt install -y netcat
+
 # copy source and install dependencies
 RUN mkdir -p /opt/app
 RUN mkdir -p /opt/app/pip_cache
@@ -18,11 +22,6 @@ WORKDIR /opt/app/todo
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
 RUN chown -R www-data:www-data /opt/app
-
-# superuser
-
-ENV DJANGO_SUPERUSER_USERNAME carra
-ENV DJANGO_SUPERUSER_PASSWORD hello$
 
 # start server
 EXPOSE 8020
